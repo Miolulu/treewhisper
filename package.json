@@ -5,8 +5,8 @@
   "main": "src/server.js",
  "scripts": {
   "dev": "node src/server.js",
-  "start": "npx prisma db push && node src/server.js",
-  "build": "echo build done",
+  "start": "node src/server.js",
+  "build": "echo done",
   "prisma:generate": "prisma generate",
   "prisma:migrate": "prisma migrate dev --name init"
 },
