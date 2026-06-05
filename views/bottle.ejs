@@ -1,0 +1,175 @@
+<%- include("partials/header") %>
+
+<style>
+  .pick-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    background-color: var(--bg-cream);
+    background-image: url('/public/images/backgrounds/bg-forest-light.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .pick-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .tree-zone {
+    position: relative;
+    animation: breathe 6s ease-in-out infinite;
+    cursor: pointer;
+  }
+
+  .tree-zone.shaking { animation: shake 0.6s ease-in-out; }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-4deg); }
+    40% { transform: rotate(4deg); }
+    60% { transform: rotate(-3deg); }
+    80% { transform: rotate(2deg); }
+  }
+
+  .tree-img {
+    width: 260px;
+    max-width: 75vw;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.12));
+  }
+
+  .shake-tip {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--text-heading);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .result-card {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(139,111,71,0.1);
+    z-index: 100;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--text-hint);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 12px;
+    min-width: 64px;
+    cursor: pointer;
+  }
+
+  .nav-item img { width: 26px; height: 26px; object-fit: contain; opacity: 0.55; }
+  .nav-item.active { color: var(--bark); font-weight: 600; }
+  .nav-item.active img { opacity: 1; }
+</style>
+
+<div class="pick-container">
+  <div class="pick-main">
+    <div class="tree-zone" id="treeZone" onclick="shakeTree()">
+      <img src="/public/images/ui/main-tree.png" class="tree-img" alt="摇晃大树">
+      <div class="shake-tip">
+        <img src="/public/images/icons/icon-pet.png" width="20"> 点我摇晃，捡纸团
+      </div>
+    </div>
+
+    <% if (typeof note !== "undefined" && note) { %>
+    <div class="result-card">
+      <span class="paper-type type-<%= note.category || 'mood' %>">
+        <img src="/public/images/icons/type-<%= note.category || 'mood' %>.png" style="width:14px; vertical-align:middle; margin-right:4px;">
+        <%= note.category === 'mood' ? '心情' : note.category === 'worry' ? '烦恼' : note.category === 'todo' ? '待办' : note.category === 'dream' ? '梦想' : '秘密' %>
+      </span>
+      <div class="paper-content"><%= note.rendered || note.content %></div>
+      <div class="paper-meta">来自：匿名树友 · <%= note.createdAt ? new Date(note.createdAt).toLocaleDateString('zh-CN') : '' %></div>
+    </div>
+    <% } else if (typeof error !== "undefined" && error) { %>
+    <div class="result-card">
+      <p style="color:var(--text-hint);"><%= error %></p>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:16px;">
+        <button class="btn-green" onclick="window.location.href='/bottles/shake'">再摇一次</button>
+        <button class="btn-green-outline" onclick="window.location.href='/tree'">我知道了</button>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="/tree" class="nav-item">
+    <img src="/public/images/icons/icon-calendar.png"><span>树历</span>
+  </a>
+  <a href="/tree?write=1" class="nav-item">
+    <img src="/public/images/icons/icon-write.png"><span>写纸条</span>
+  </a>
+  <a href="/tree?pick=1" class="nav-item active">
+    <img src="/public/images/icons/icon-bottle.png"><span>捡纸团</span>
+  </a>
+  <a href="/tree?spirit=1" class="nav-item">
+    <img src="/public/images/icons/icon-sprite.png"><span>精灵</span>
+  </a>
+  <a href="/spirit/album" class="nav-item">
+    <img src="/public/images/icons/icon-album.png"><span>树影集</span>
+  </a>
+</nav>
+
+<script>
+  function shakeTree() {
+    const tree = document.getElementById('treeZone');
+    tree.classList.add('shaking');
+    setTimeout(() => {
+      tree.classList.remove('shaking');
+      window.location.href = '/bottles/shake';
+    }, 700);
+  }
+</script>
+
+<%- include("partials/footer") %>

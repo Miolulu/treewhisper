@@ -1,0 +1,126 @@
+<%- include("partials/header") %>
+
+<style>
+  .album-page {
+    min-height: 100vh;
+    padding: 24px 20px 100px;
+    background-color: var(--bg-cream);
+    background-image: url('/public/images/backgrounds/bg-cork-texture.jpg');
+    background-size: 300px;
+  }
+
+  .album-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 28px 20px;
+    border: 1px solid rgba(139, 111, 71, 0.1);
+    box-shadow: 0 8px 30px rgba(74, 55, 40, 0.06);
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .upload-zone {
+    display: block;
+    margin: 24px auto;
+    padding: 40px 20px;
+    border: 2px dashed var(--text-hint);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .upload-zone:hover {
+    border-color: var(--leaf);
+    background: rgba(124,179,66,0.06);
+  }
+
+  .upload-zone img {
+    width: 48px;
+    height: 48px;
+    opacity: 0.5;
+    margin-bottom: 12px;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(139,111,71,0.1);
+    z-index: 100;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--text-hint);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 12px;
+    min-width: 64px;
+    cursor: pointer;
+  }
+
+  .nav-item img { width: 26px; height: 26px; object-fit: contain; opacity: 0.55; }
+  .nav-item.active { color: var(--bark); font-weight: 600; }
+  .nav-item.active img { opacity: 1; }
+</style>
+
+<div class="album-page">
+  <div class="album-card">
+    <h2 style="font-family:var(--font-title-zh); color:var(--text-heading); margin-bottom:8px;">📷 树影集</h2>
+    <p style="color:var(--text-hint); font-size:14px;">用照片记录树洞里的美好瞬间</p>
+
+    <% if (typeof images !== "undefined" && images && images.length > 0) { %>
+      <!-- 未来照片网格可在此处扩展 -->
+    <% } else { %>
+      <div style="padding: 40px 0;">
+        <img src="/public/images/icons/icon-album.png" style="width:72px; height:72px; opacity:0.35; margin-bottom:16px;" alt="">
+        <h3 style="color:var(--bark);">树影集还是空的</h3>
+        <p style="color:var(--text-hint); font-size:14px; margin-bottom:24px;">上传照片，留下你的树洞回忆</p>
+      </div>
+    <% } %>
+
+    <form action="/spirit/album/upload" method="POST" enctype="multipart/form-data">
+      <label class="upload-zone" for="photoInput">
+        <img src="/public/images/icons/icon-write.png" alt="上传照片">
+        <p style="color:var(--text-hint); font-size:15px;">点击上传新照片</p>
+      </label>
+      <input id="photoInput" type="file" name="image" accept="image/*" style="display:none;" onchange="this.form.submit()">
+    </form>
+  </div>
+</div>
+
+<!-- 底部导航栏（与树历页一致） -->
+<nav class="bottom-nav">
+  <a href="/tree" class="nav-item">
+    <img src="/public/images/icons/icon-calendar.png"><span>树历</span>
+  </a>
+  <a href="/tree?write=1" class="nav-item">
+    <img src="/public/images/icons/icon-write.png"><span>写纸条</span>
+  </a>
+  <a href="/tree?pick=1" class="nav-item">
+    <img src="/public/images/icons/icon-bottle.png"><span>捡纸团</span>
+  </a>
+  <a href="/tree?spirit=1" class="nav-item">
+    <img src="/public/images/icons/icon-sprite.png"><span>精灵</span>
+  </a>
+  <a href="/spirit/album" class="nav-item active">
+    <img src="/public/images/icons/icon-album.png"><span>树影集</span>
+  </a>
+</nav>
+
+<%- include("partials/footer") %>

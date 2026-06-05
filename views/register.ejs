@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TreeWhisper · 注册</title>
+  <link rel="stylesheet" href="/public/css/style.css">
+  <link rel="icon" href="data:,">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+<style>
+  .register-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #E3F2FD 0%, #F7F3E8 50%, #FFFDF7 100%);
+    background-image: url('/public/images/ui/login-bg.png');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .register-card {
+    background: rgba(255, 253, 247, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 48px 36px 36px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 40px rgba(74, 55, 40, 0.1);
+    border: 1px solid rgba(139, 111, 71, 0.12);
+    animation: fadeInUp 0.6s ease;
+    text-align: center;
+  }
+
+  .register-logo {
+    margin-bottom: 36px;
+  }
+
+  .register-logo img {
+    width: 64px;
+    height: 64px;
+    animation: float 3s ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+
+  .register-logo h1 {
+    font-family: 'Caveat', 'Caveat Brush', cursive;
+    font-size: 34px;
+    color: #4A3728;
+    margin: 0;
+  }
+
+  .register-logo .subtitle {
+    color: #8B6F47;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4A3728;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid rgba(139, 111, 71, 0.15);
+    border-radius: 16px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #4A3728;
+    transition: all 0.3s ease;
+  }
+
+  .input-group input:focus {
+    outline: none;
+    border-color: #7CB342;
+    box-shadow: 0 0 0 4px rgba(124, 179, 66, 0.08);
+  }
+
+  .btn-enter {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #7CB342 0%, #558B2F 100%);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(124, 179, 66, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+
+  .btn-enter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(124, 179, 66, 0.4);
+  }
+
+  .healing-text {
+    color: #8B7E6A;
+    font-size: 13px;
+    margin-top: 16px;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  .register-footer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(139, 111, 71, 0.12);
+    color: #8B6F47;
+    font-size: 14px;
+  }
+
+  .register-footer a {
+    color: #7CB342;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="register-page">
+  <div class="register-card">
+    <div class="register-logo">
+      <img src="/public/images/ui/main-tree.png" alt="TreeWhisper">
+      <h1>TreeWhisper</h1>
+      <p class="subtitle">种下一棵树，开始你的树洞之旅</p>
+    </div>
+
+    <% if (typeof error !== "undefined" && error) { %>
+      <p style="color:#E57373;background:#FFF3E0;padding:10px;border-radius:12px;margin-bottom:16px;"><%= error %></p>
+    <% } %>
+
+    <form action="/register" method="POST">
+      <div class="input-group">
+        <label><img src="/public/images/decorations/deco-cloud.png" style="width:18px; height:18px; vertical-align:middle; margin-right:4px;">用户名</label>
+        <input type="text" name="username" placeholder="给你自己起个名字" required>
+      </div>
+      <div class="input-group">
+       <label><img src="/public/images/icons/type-secret.png" style="width:18px; height:18px; vertical-align:middle; margin-right:4px;">密码</label>
+        <input type="password" name="password" placeholder="至少6位密码" required minlength="6">
+      </div>
+      <div class="input-group">
+        <label><img src="/public/images/icons/type-secret.png" style="width:18px; height:18px; vertical-align:middle; margin-right:4px;">确认密码</label>
+        <input type="password" name="confirmPassword" placeholder="再输入一次密码" required minlength="6">
+      </div>
+     <button type="submit" class="btn-enter"><img src="/public/images/icons/icon-tree.png" style="width:20px; height:20px; vertical-align:middle; margin-right:6px;">种下我的树</button>
+    </form>
+
+    <p class="healing-text">"在这里，每一句话都会被温柔接住"</p>
+
+    <div class="register-footer">
+      已经有树了？ <a href="/login">回到树洞</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<%- include("partials/header") %>
+
+<style>
+  .spirit-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .spirit-modal {
+    width: 100%; max-width: 400px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 28px;
+    padding: 32px 24px 24px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+    animation: fadeUp 0.3s;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .close-spirit {
+    position: absolute; top: 12px; right: 16px;
+    font-size: 24px; cursor: pointer; color: var(--text-hint);
+  }
+  .spirit-avatar {
+    width: 130px; height: 130px;
+    border-radius: 50%; object-fit: contain;
+    animation: breathe 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.1));
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+  .progress-bar {
+    width: 100%; height: 8px; background: #E8E0D5;
+    border-radius: 4px; margin: 12px 0; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--leaf), #AED581);
+    border-radius: 4px; transition: width 0.5s;
+  }
+  .action-row { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+  .action-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 12px 16px; border-radius: 16px;
+    background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.04);
+    cursor: pointer; font-size: 12px; color: var(--text-body); transition: all 0.2s;
+  }
+  .action-btn img { width: 28px; height: 28px; }
+  .feed-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 300;
+    align-items: center; justify-content: center;
+  }
+  .feed-modal.show { display: flex; }
+  .feed-box {
+    background: white; border-radius: 24px; padding: 28px;
+    text-align: center; width: 280px;
+  }
+  .food-btn {
+    font-size: 28px; padding: 10px; border-radius: 14px;
+    border: 1px solid #ddd; background: white; cursor: pointer;
+  }
+</style>
+
+<div class="spirit-overlay" id="spiritOverlay" onclick="if(event.target===this) goBack()">
+  <div class="spirit-modal">
+    <span class="close-spirit" onclick="goBack()">✕</span>
+
+    <%
+      var spiritType = (typeof user !== "undefined" && user && user.spiritType) ? user.spiritType : 'squirrel';
+      var spiritLevel = (typeof user !== "undefined" && user) ? (user.spiritLevel || 1) : 1;
+      var spiritExp = (typeof user !== "undefined" && user) ? (user.spiritExp || 0) : 0;
+      
+      var stageMap = { 1: 'egg', 2: 'baby', 3: 'child', 4: 'adult', 5: 'special' };
+      var stage = stageMap[spiritLevel] || 'adult';
+      var spriteImg = '/public/images/sprites/' + spiritType + '-' + stage + '.png';
+      
+      var nameMap = { squirrel: '松果', snail: '小蜗', bird: '羽羽', butterfly: '蝶蝶' };
+      var labelMap = { squirrel: '活泼提醒 · 松鼠', snail: '温柔治愈 · 蜗牛', bird: '自由诗意 · 小鸟', butterfly: '蜕变成长 · 蝴蝶' };
+    %>
+
+    <img src="<%= spriteImg %>" class="spirit-avatar" alt="守护精灵">
+    <h2 style="font-family:var(--font-title-zh); color:#4A3728; margin-top:12px;"><%= nameMap[spiritType] || '守护精灵' %></h2>
+    <p style="color:var(--text-body); font-size:14px;"><%= labelMap[spiritType] || '' %></p>
+    <div style="display:inline-block; background:rgba(255,213,79,0.2); padding:4px 16px; border-radius:14px; color:var(--bark); font-size:13px; margin-top:6px;">Lv.<%= spiritLevel %></div>
+
+    <div style="display:flex; justify-content:space-between; margin-top:20px; font-size:13px; color:var(--text-body);">
+      <span>成长进度</span><span><%= spiritExp %> EXP</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: <%= Math.min((spiritExp % 10) * 10, 100) %>%;"></div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.8); border-radius:16px; padding:16px; margin-top:16px; color:var(--text-heading); font-size:15px;">
+      💬 <%= (typeof welcomeMessage !== "undefined" && welcomeMessage) ? welcomeMessage : '嗨～今天想和我说什么呢？' %>
+    </div>
+
+    <div class="action-row">
+      <div class="action-btn" onclick="showFeed()">
+        <img src="/public/images/icons/icon-feed.png">喂食
+      </div>
+      <div class="action-btn" onclick="petSpirit()">
+        <img src="/public/images/icons/icon-pet.png">抚摸
+      </div>
+      <div class="action-btn" onclick="window.location.href='/notes/new'">
+        <img src="/public/images/icons/icon-write.png">写纸条
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 喂食弹窗 -->
+<div class="feed-modal" id="feedModal">
+  <div class="feed-box">
+    <h3>🧺 选择食物</h3>
+    <div style="display:flex; gap:10px; justify-content:center; margin:16px 0;">
+      <button class="food-btn" onclick="doFeed('dew')"><img src="/public/images/icons/food-dew.png" style="width:32px;"></button>
+      <button class="food-btn" onclick="doFeed('seed')"><img src="/public/images/icons/food-seed.png" style="width:32px;"></button>
+      <button class="food-btn" onclick="doFeed('flower')"><img src="/public/images/icons/food-flower.png" style="width:32px;"></button>
+      <button class="food-btn" onclick="doFeed('honey')"><img src="/public/images/icons/food-honey.png" style="width:32px;"></button>
+    </div>
+    <button onclick="closeFeed()" style="padding:8px 20px; border-radius:12px; border:1px solid #ccc; background:white;">取消</button>
+  </div>
+</div>
+
+<script>
+  function goBack() { window.location.href = '/tree'; }
+  let busyFeed = false, busyPet = false;
+
+  function showFeed() { document.getElementById('feedModal').classList.add('show'); }
+  function closeFeed() { document.getElementById('feedModal').classList.remove('show'); }
+
+  function doFeed(food) {
+    if (busyFeed) return;
+    busyFeed = true;
+    fetch('/spirit/feed', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({food})
+    }).then(r => r.json()).then(d => {
+      closeFeed();
+      if (d.error) alert(d.error);
+      else location.reload();
+    }).finally(() => busyFeed = false);
+  }
+
+  function petSpirit() {
+    if (busyPet) return;
+    busyPet = true;
+    fetch('/spirit/pet', { method: 'POST' })
+      .then(r => r.json()).then(d => {
+        if (d.error) alert(d.error);
+        else location.reload();
+      }).finally(() => busyPet = false);
+  }
+</script>
+
+<%- include("partials/footer") %>

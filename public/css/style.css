@@ -1,0 +1,183 @@
+/* ========================================
+   TreeWhisper 全局样式 V2
+   严格遵循 UI 重构规范
+   ======================================== */
+
+/* 字体引入 */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Caveat+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap');
+
+:root {
+  /* 主背景 */
+  --bg-cream: #F5F0E8;
+  --bg-forest: #E8F5E0;
+  --bg-cork: #D7CCC8;
+
+  /* 主色调 */
+  --bark: #8B6F47;
+  --leaf: #7CB342;
+  --sun: #FFD54F;
+
+  /* 文字 */
+  --text-heading: #4A3728;
+  --text-body: #8B7E6A;
+  --text-hint: #B5A99A;
+
+  /* 卡片 */
+  --card-bg: rgba(255, 253, 247, 0.92);
+  --card-border: rgba(139, 111, 71, 0.15);
+  --card-shadow: 0 4px 20px rgba(74, 55, 40, 0.08);
+
+  /* 圆角 */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-round: 50%;
+
+  /* 字体 */
+  --font-title-zh: 'ZCOOL XiaoWei', 'Ma Shan Zheng', cursive;
+  --font-title-en: 'Caveat', 'Caveat Brush', cursive;
+  --font-body: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  /* 动效 */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-cream);
+  background-image: url('/public/images/backgrounds/bg-forest-light.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: var(--text-body);
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 全局动画 */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* 毛玻璃卡片 */
+.card-glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  padding: 16px;
+}
+
+/* 按钮体系 */
+.btn-primary {
+  background: var(--bark);
+  color: #FFF;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(139, 111, 71, 0.3);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}
+
+.btn-secondary {
+  background: #FFF;
+  color: var(--bark);
+  border: 1px solid var(--bark);
+  border-radius: var(--radius-lg);
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-float {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-round);
+  background: #FFF;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-float:active {
+  transform: scale(0.92);
+}
+
+/* 输入框 */
+.text-input {
+  background: rgba(255, 253, 247, 0.8);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 16px;
+  color: var(--text-heading);
+  outline: none;
+  width: 100%;
+}
+
+.text-input:focus {
+  box-shadow: 0 0 0 2px var(--leaf);
+}
+/* 响应式适配 */
+html {
+  font-size: 16px;
+}
+
+body {
+  max-width: 480px;        /* 限制最大宽度，模拟手机 */
+  margin: 0 auto;
+  box-shadow: 0 0 40px rgba(0,0,0,0.05);  /* 两侧阴影，增加卡片感 */
+}
+
+/* 平板及以上尺寸 */
+@media (min-width: 768px) {
+  body {
+    border-left: 1px solid var(--card-border);
+    border-right: 1px solid var(--card-border);
+  }
+}
+
+/* 小手机适配 */
+@media (max-width: 374px) {
+  .btn-float {
+    width: 48px;
+    height: 48px;
+  }
+  .main-tree-img {
+    width: 220px;
+  }
+}

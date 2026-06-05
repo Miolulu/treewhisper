@@ -1,0 +1,47 @@
+    </main>
+    
+    <footer class="footer">
+        <p>🌳 TreeWhisper · 每一句话都会被温柔接住</p>
+    </footer>
+    
+    <script>
+      const socket = io();
+      let currentUserId = null;
+      try {
+        currentUserId = '<%= typeof user !== "undefined" && user ? user.id : "" %>';
+      } catch(e) {
+        currentUserId = localStorage.getItem('userId');
+      }
+      
+      socket.on('connect', () => {
+        console.log('✅ 已连接');
+        if (currentUserId) socket.emit('authenticate', currentUserId);
+      });
+      
+      socket.on('notification', (data) => {
+        if (Notification.permission === "granted") {
+          new Notification(data.title, { body: data.message });
+        }
+        showToast(data);
+      });
+      
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+      
+      function showToast(data) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `
+          <div style="font-weight:700;color:var(--wood-dark);">${data.title}</div>
+          <div style="color:var(--wood);margin:4px 0;">${data.message}</div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('toast-hide');
+          setTimeout(() => toast.remove(), 300);
+        }, 4000);
+      }
+    </script>
+</body>
+</html>

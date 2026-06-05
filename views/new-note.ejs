@@ -1,0 +1,117 @@
+<%- include("partials/header") %>
+
+<style>
+  .write-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .write-card {
+    width: 100%; max-width: 420px;
+    background: #FFFDF7;
+    border-radius: 24px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    position: relative;
+    background-image: url('/public/images/backgrounds/bg-paper-texture.jpg');
+    background-size: cover;
+  }
+  .close-write {
+    position: absolute; top: 12px; right: 16px;
+    font-size: 24px; cursor: pointer; color: var(--text-hint);
+  }
+  .type-scroll {
+    display: flex; gap: 8px; overflow-x: auto;
+    margin: 16px 0; padding-bottom: 4px;
+  }
+  .type-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 10px 14px; border-radius: 16px; border: 2px solid #E0E0E0;
+    background: white; cursor: pointer; font-size: 12px; font-weight: 600;
+    transition: all 0.2s; min-width: 64px;
+  }
+  .type-chip img { width: 26px; height: 26px; }
+  .type-chip.active { border-color: #7CB342; background: #F1F8E9; }
+  .paper-area {
+    background: rgba(255,253,247,0.8);
+    border-radius: 16px; padding: 16px;
+    background-image: url('/public/images/backgrounds/bg-paper-texture.jpg');
+    background-size: cover;
+    min-height: 160px;
+  }
+  .paper-area textarea {
+    width: 100%; border: none; background: transparent;
+    font-size: 16px; line-height: 1.7; resize: vertical;
+    min-height: 140px; outline: none; color: #4A3728;
+  }
+  .action-row { display: flex; gap: 12px; margin-top: 16px; }
+  .btn-save, .btn-throw {
+    flex: 1; padding: 14px; border-radius: 20px; border: none;
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-save { background: white; border: 2px solid #8B6F47; color: #8B6F47; }
+  .btn-throw { background: #8B6F47; color: white; }
+  .btn-save:active, .btn-throw:active { transform: scale(0.96); }
+</style>
+
+<div class="write-overlay" id="writeOverlay" onclick="if(event.target===this) goBack()">
+  <div class="write-card">
+    <span class="close-write" onclick="goBack()">✕</span>
+    <h2 style="text-align:center; font-family:var(--font-title-zh); color:#4A3728; margin-bottom:8px;">✍️ 写一张小纸条</h2>
+
+    <form action="/notes/new" method="POST" enctype="multipart/form-data">
+      <div class="type-scroll" id="typeRow">
+        <div class="type-chip active" data-type="mood">
+          <img src="/public/images/icons/type-mood.png">心情
+        </div>
+        <div class="type-chip" data-type="worry">
+          <img src="/public/images/icons/type-worry.png">烦恼
+        </div>
+        <div class="type-chip" data-type="todo">
+          <img src="/public/images/icons/type-todo.png">待办
+        </div>
+        <div class="type-chip" data-type="dream">
+          <img src="/public/images/icons/type-dream.png">梦想
+        </div>
+        <div class="type-chip" data-type="secret">
+          <img src="/public/images/icons/type-secret.png">秘密
+        </div>
+      </div>
+      <input type="hidden" name="category" id="categoryInput" value="mood">
+
+      <div class="paper-area">
+        <textarea name="content" id="contentBox" placeholder="亲爱的树洞：&#10;今天..."></textarea>
+      </div>
+
+      <div class="action-row">
+        <button type="submit" name="action" value="save" class="btn-save">📥 存进树洞</button>
+        <button type="submit" name="action" value="throw" class="btn-throw" id="throwBtn">🫳 抛出纸团</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function goBack() {
+    window.location.href = '/tree';
+  }
+
+  const typeChips = document.querySelectorAll('.type-chip');
+  const categoryInput = document.getElementById('categoryInput');
+  const throwBtn = document.getElementById('throwBtn');
+
+  typeChips.forEach(chip => {
+    chip.addEventListener('click', function() {
+      typeChips.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      const type = this.dataset.type;
+      categoryInput.value = type;
+      throwBtn.style.display = type === 'secret' ? 'none' : 'block';
+    });
+  });
+</script>
+
+<%- include("partials/footer") %>

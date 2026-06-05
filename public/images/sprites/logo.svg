@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
+  <!-- 定义渐变与滤镜，增加手绘温暖感 -->
+  <defs>
+    <!-- 树冠层叠渐变 -->
+    <linearGradient id="leafGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8BB394" />
+      <stop offset="100%" stop-color="#557A61" />
+    </linearGradient>
+    <linearGradient id="leafGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6F9979" />
+      <stop offset="100%" stop-color="#415E4A" />
+    </linearGradient>
+    
+    <!-- 树干渐变 -->
+    <linearGradient id="trunkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A98467" />
+      <stop offset="100%" stop-color="#7F5A3E" />
+    </linearGradient>
+
+    <!-- 纸团微光阴影 -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- ==================== 左侧：图标区域 (0 - 55px) ==================== -->
+  <g id="logo-icon" transform="translate(2, 0)">
+    
+    <!-- 树干与树根 (手绘感弧度) -->
+    <path d="M 23,28 Q 23,38 21,43 Q 23,45 28,45 Q 27,38 27,28 Z" fill="url(#trunkGrad)" />
+    <path d="M 21,43 Q 17,45 15,45 Q 18,43 21,43" stroke="#7F5A3E" stroke-width="1.5" stroke-linecap="round" fill="none" />
+    
+    <!-- 树洞 (深邃治愈的暗色调) -->
+    <ellipse cx="25" cy="36" rx="2.5" ry="4" fill="#3D2516" />
+    <!-- 树洞里隐约的光芒 -->
+    <circle cx="25" cy="37" r="1.2" fill="#FAD02C" opacity="0.7" />
+
+    <!-- 树冠 (采用绘本风格的三层圆形堆叠，带手绘描边) -->
+    <!-- 左叶片 -->
+    <circle cx="18" cy="23" r="8.5" fill="url(#leafGrad2)" />
+    <!-- 右叶片 -->
+    <circle cx="31" cy="23" r="8.5" fill="url(#leafGrad2)" />
+    <!-- 主树冠 -->
+    <circle cx="24.5" cy="18" r="10.5" fill="url(#leafGrad1)" />
+    <!-- 树冠高光点缀 (手绘风亮色斑点) -->
+    <circle cx="21" cy="13" r="2" fill="#BCE3C5" opacity="0.6" />
+    <circle cx="29" cy="16" r="1.5" fill="#BCE3C5" opacity="0.6" />
+
+    <!-- 飘出树洞的“小纸团” (折线手绘几何风，带发光滤镜) -->
+    <g transform="translate(1, 0)" filter="url(#softGlow)">
+      <!-- 纸团本体 -->
+      <path d="M 37,21 L 41,19 L 43,22 L 40,25 L 36,23 Z" fill="#FDFCF7" stroke="#7F6B5D" stroke-width="0.8" stroke-linejoin="round" />
+      <!-- 纸团褶皱肌理线 -->
+      <path d="M 37,21 L 40,22 L 43,22 M 41,19 L 40,22 L 40,25" stroke="#D3C7BC" stroke-width="0.6" />
+      <!-- 纸团后方的漂流轨迹/微光 -->
+      <path d="M 32,29 Q 34,26 36,24" stroke="#FCE8A6" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.8" />
+    </g>
+
+    <!-- 树脚下的守护精灵：小蜗牛 (可爱治愈拟人) -->
+    <g transform="translate(8, 36)">
+      <!-- 蜗牛身体 -->
+      <path d="M 1,7 Q 4,6 7,7 L 7,5 Q 6,3 5,4" stroke="#7F5A3E" stroke-width="0.8" fill="#FDF5E6" stroke-linecap="round" stroke-linejoin="round" />
+      <!-- 蜗牛触角 -->
+      <line x1="5" y1="4" x2="4.5" y2="2" stroke="#7F5A3E" stroke-width="0.6" />
+      <line x1="5.8" y1="4.2" x2="5.8" y2="2.2" stroke="#7F5A3E" stroke-width="0.6" />
+      <!-- 蜗牛壳 (木年轮色调) -->
+      <circle cx="3" cy="5.5" r="2.2" fill="#E6C594" stroke="#7F5A3E" stroke-width="0.8" />
+      <!-- 壳上的螺旋线 -->
+      <path d="M 3,5.5 A 1 1 0 0 1 3.5,4.5" stroke="#9C7A50" stroke-width="0.5" fill="none" />
+    </g>
+
+    <!-- 闪烁的星星 (治愈系的四角星) -->
+    <!-- 右上角大星星 -->
+    <path d="M 43,6 L 44,8.5 L 46.5,9 L 44,9.5 L 43,12 L 42,9.5 L 39.5,9 L 42,8.5 Z" fill="#FAD02C" />
+    <!-- 左侧小星星 -->
+    <path d="M 10,13 L 10.5,14.5 L 12,15 L 10.5,15.5 L 10,17 L 9.5,15.5 L 8,15 L 9.5,14.5 Z" fill="#FCE8A6" opacity="0.9" />
+  </g>
+
+  <!-- ==================== 右侧：文字品牌区域 (55 - 200px) ==================== -->
+  <g id="logo-text">
+    <!-- 主标题：“树洞漂流” (使用温暖圆润的系统字体 fallback) -->
+    <text x="56" y="27" 
+          fill="#3F5947" 
+          font-size="16" 
+          font-family="PingFang SC, Lantinghei SC, Microsoft YaHei, Open Sans, sans-serif" 
+          font-weight="bold" 
+          letter-spacing="1">树洞漂流</text>
+          
+    <!-- 副标题/Slogan：“心事的温柔归宿” -->
+    <text x="57" y="41" 
+          fill="#948475" 
+          font-size="9" 
+          font-family="PingFang SC, Microsoft YaHei, sans-serif" 
+          letter-spacing="0.5">心事的温柔归宿</text>
+  </g>
+</svg>

@@ -1,0 +1,82 @@
+<%- include("partials/header") %>
+
+<style>
+  .settings-page {
+    min-height: 100vh;
+    background: var(--bg-cream);
+    background-image: url('/public/images/backgrounds/bg-forest-light.jpg');
+    background-size: cover;
+    padding: 24px 20px;
+  }
+  .settings-card {
+    max-width: 420px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 32px 24px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    text-align: center;
+  }
+  .settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(139,111,71,0.1);
+    color: var(--text-heading);
+    font-size: 16px;
+  }
+  .settings-item:last-child { border-bottom: none; }
+  .settings-item span { color: var(--text-hint); font-size: 14px; }
+  .btn-logout {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 32px;
+    background: var(--bark);
+    color: white;
+    border-radius: 24px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn-logout:active { transform: scale(0.95); }
+  form.inline-form { display: flex; gap: 8px; align-items: center; }
+  form.inline-form input { padding: 8px 12px; border-radius: 12px; border: 1px solid var(--card-border); font-size: 14px; }
+  form.inline-form button { padding: 8px 16px; border-radius: 12px; background: #7CB342; color: white; border: none; cursor: pointer; font-size: 14px; }
+</style>
+
+<div class="settings-page">
+  <div class="settings-card">
+    <h2 style="font-family:var(--font-title-zh); color:var(--text-heading); margin-bottom:24px;">设置</h2>
+
+    <% if (typeof user !== "undefined" && user) { %>
+      <div class="settings-item">
+        用户名
+        <form method="POST" action="/settings/nickname" class="inline-form">
+          <input type="text" name="nickname" value="<%= user.nickname || user.username %>" required>
+          <button type="submit">保存</button>
+        </form>
+      </div>
+
+      <div class="settings-item">
+        精灵类型
+        <form method="POST" action="/settings/spirit" class="inline-form" onsubmit="return confirm('更换精灵会重置成长进度，确定吗？')">
+          <select name="spiritType" style="padding:8px 12px; border-radius:12px; border:1px solid var(--card-border); font-size:14px;">
+            <option value="squirrel" <%= user.spiritType === 'squirrel' ? 'selected' : '' %>>松鼠</option>
+            <option value="snail" <%= user.spiritType === 'snail' ? 'selected' : '' %>>蜗牛</option>
+            <option value="bird" <%= user.spiritType === 'bird' ? 'selected' : '' %>>小鸟</option>
+            <option value="butterfly" <%= user.spiritType === 'butterfly' ? 'selected' : '' %>>蝴蝶</option>
+          </select>
+          <button type="submit">更换</button>
+        </form>
+      </div>
+    <% } %>
+
+    <a href="/logout" class="btn-logout">退出登录</a>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-hint);">TreeWhisper v1.0</p>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

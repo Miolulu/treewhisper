@@ -1,0 +1,160 @@
+ <%- include("partials/header") %>
+
+<style>
+  .detail-page { max-width: 600px; margin: 0 auto; }
+  
+  .note-full {
+    background: #FFFDF7;
+    border-radius: 20px;
+    padding: 30px 26px;
+    box-shadow: 3px 4px 16px rgba(93,64,55,0.08);
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .note-type-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .type-mood { background: #E1F5FE; color: #0288D1; }
+  .type-worry { background: #EDE7F6; color: #512DA8; }
+  .type-todo { background: #FFF3E0; color: #E65100; }
+  .type-dream { background: #FFFDE7; color: #F57F17; }
+  .type-secret { background: #FFEBEE; color: #B71C1C; }
+
+  .note-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #5D4037;
+    margin-bottom: 12px;
+  }
+
+  .note-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #4A4A4A;
+    white-space: pre-wrap;
+    background: #FFFDF7;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 31px, #E8E0D5 31px, #E8E0D5 32px
+    );
+    line-height: 32px;
+    padding: 20px 16px;
+    border-radius: 12px;
+    min-height: 100px;
+  }
+
+  .note-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #8B6F47;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .note-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .note-images img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .replies-section {
+    margin-top: 24px;
+  }
+
+  .replies-section h3 {
+    font-family: var(--font-hand);
+    font-size: 20px;
+    color: #5D4037;
+    margin-bottom: 12px;
+  }
+
+  .reply-item {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    font-size: 14px;
+    color: #4A4A4A;
+  }
+
+  .reply-item .reply-time {
+    font-size: 11px;
+    color: #BDBDBD;
+    margin-top: 4px;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: #7CB342;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .back-link:hover { color: #558B2F; }
+</style>
+
+<div class="detail-page">
+  <a href="/notes" class="back-link">← 返回树洞</a>
+
+  <div class="note-full">
+    <span class="note-type-badge type-<%= note.category || 'mood' %>">
+      <% if (note.category === 'mood') { %>😊 心情
+      <% } else if (note.category === 'worry') { %>😣 烦恼
+      <% } else if (note.category === 'todo') { %>✅ 待办
+      <% } else if (note.category === 'dream') { %>⭐ 梦想
+      <% } else if (note.category === 'secret') { %>🔒 秘密
+      <% } else { %>📝 纸条<% } %>
+    </span>
+
+    <% if (note.title) { %>
+      <div class="note-title"><%= note.title %></div>
+    <% } %>
+
+    <div class="note-content"><%= note.content %></div>
+
+    <% if (note.images && note.images.length > 0) { %>
+      <div class="note-images">
+        <% note.images.forEach(function(img) { %>
+          <img src="<%= img.imageUrl %>" alt="照片" loading="lazy">
+        <% }) %>
+      </div>
+    <% } %>
+
+    <div class="note-meta">
+      <span>📅 <%= note.createdAt.toLocaleDateString('zh-CN') %></span>
+      <span>💬 <%= note.replies ? note.replies.length : 0 %> 回应</span>
+      <% if (note.status === 'thrown') { %><span>🫳 已抛掷</span><% } %>
+    </div>
+  </div>
+
+  <% if (note.replies && note.replies.length > 0) { %>
+    <div class="replies-section">
+      <h3>💬 回应</h3>
+      <% note.replies.forEach(function(reply) { %>
+        <div class="reply-item">
+          <div><%= reply.content %></div>
+          <div class="reply-time"><%= reply.createdAt ? new Date(reply.createdAt).toLocaleDateString('zh-CN') : '' %></div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include("partials/footer") %>

@@ -1,0 +1,55 @@
+<!-- public/components/tree-calendar.svg (或直接内嵌到 HTML) -->
+<svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:400px; background: #f4f1ea; border-radius: 16px; font-family: 'Segoe UI', sans-serif;">
+  <defs>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6B8E23"/>
+      <stop offset="100%" stop-color="#556B2F"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1.5" flood-color="#00000033"/>
+    </filter>
+  </defs>
+  
+  <!-- 标题 -->
+  <text x="200" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#5C4033">树历 · 2026年5月</text>
+  
+  <!-- 星期头 -->
+  <g font-size="12" fill="#8B7355" text-anchor="middle">
+    <text x="35" y="55">一</text><text x="90" y="55">二</text><text x="145" y="55">三</text>
+    <text x="200" y="55">四</text><text x="255" y="55">五</text><text x="310" y="55">六</text><text x="365" y="55">日</text>
+  </g>
+  
+  <!-- 日期单元格: 使用后端数据动态生成，这里展示静态示例结构 -->
+  <!-- 示例: 5月1日(周四)，有漂流记录，显示小树苗 -->
+  <g transform="translate(185, 65)">
+    <rect x="0" y="0" width="45" height="45" rx="8" fill="#E8F5E9" stroke="#A9C2A0" stroke-width="1"/>
+    <text x="8" y="15" font-size="11" fill="#2E3B2C">1</text>
+    <!-- 代表有纸条的小叶子 SVG -->
+    <path d="M22,25 Q28,18 34,25 Q28,32 22,25 Z" fill="url(#leafGrad)" filter="url(#shadow)"/>
+    <circle cx="28" cy="23" r="2" fill="#FFD700"/> <!-- 小光点 -->
+  </g>
+  
+  <!-- 示例: 5月10日(周六)，周末，心情标记 -->
+  <g transform="translate(295, 115)">
+    <rect x="0" y="0" width="45" height="45" rx="8" fill="#FFF0E0" stroke="#D4B896" stroke-width="1"/>
+    <text x="8" y="15" font-size="11" fill="#2E3B2C">10</text>
+    <circle cx="28" cy="28" r="6" fill="#FFB6C1" opacity="0.8"/> <!-- 粉红心情 -->
+  </g>
+  
+  <!-- 示例: 5月22日(今天)，高亮边框 -->
+  <g transform="translate(90, 200)">
+    <rect x="0" y="0" width="45" height="45" rx="8" fill="#FFF9C4" stroke="#FFA000" stroke-width="2"/>
+    <text x="8" y="15" font-size="12" font-weight="bold" fill="#E65100">22</text>
+    <!-- 精灵图标 -->
+    <path d="M20,35 C15,25 30,25 25,35 Z" fill="#8D6E63"/>
+    <circle cx="22.5" cy="28" r="3" fill="#FFAB91"/>
+  </g>
+  
+  <!-- 图例 -->
+  <g transform="translate(20, 300)">
+    <path d="M5,5 Q10,0 15,5 Q10,10 5,5 Z" fill="url(#leafGrad)"/>
+    <text x="20" y="10" font-size="11" fill="#5C4033">有漂流</text>
+    <circle cx="70" cy="5" r="5" fill="#FFB6C1" opacity="0.8"/>
+    <text x="82" y="10" font-size="11" fill="#5C4033">今日心情</text>
+  </g>
+</svg>

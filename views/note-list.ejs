@@ -1,0 +1,183 @@
+<% if (typeof embed !== 'undefined' && embed) { %>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: transparent;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    padding: 10px 12px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  .embed-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+    font-size: 22px;
+    color: #4A3728;
+    margin-bottom: 16px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  }
+  .embed-title img { width: 26px; height: 26px; object-fit: contain; }
+  .embed-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    background: transparent;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .embed-item:hover { background: rgba(255,255,255,0.3); }
+  .embed-item.type-mood { border-left-color: #4FC3F7; }
+  .embed-item.type-worry { border-left-color: #9575CD; }
+  .embed-item.type-todo { border-left-color: #FFB74D; }
+  .embed-item.type-dream { border-left-color: #FFD54F; }
+  .embed-item.type-secret { border-left-color: #E57373; }
+
+  .embed-type-icon {
+    width: 34px; height: 34px;
+    flex-shrink: 0;
+  }
+  .embed-type-icon img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+  }
+  .embed-content {
+    flex: 1; min-width: 0;
+  }
+  .embed-content-title {
+    font-weight: 700; color: #4A3728; font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .embed-content-preview {
+    color: #8B7E6A; font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; max-width: 100%;
+  }
+  .embed-meta {
+    display: flex; gap: 8px; align-items: center;
+    margin-top: 4px; font-size: 11px; color: #B5A99A;
+  }
+  .embed-meta img {
+    width: 12px; height: 12px;
+    margin-right: 2px; vertical-align: middle;
+  }
+  .embed-empty {
+    text-align: center; padding: 40px 0; color: #8B6F47;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div class="embed-title">
+  <img src="/public/images/icons/icon-sprite.png" alt="">
+  我的树洞
+</div>
+
+<% if (typeof notes !== "undefined" && notes && notes.length > 0) { %>
+  <% notes.forEach(function(note) { %>
+    <div class="embed-item type-<%= note.category || 'mood' %>" onclick="window.parent.openNoteDetail('<%= note.id %>')">
+      <div class="embed-type-icon">
+        <img src="/public/images/icons/type-<%= note.category || 'mood' %>.png">
+      </div>
+      <div class="embed-content">
+        <% if (note.title) { %><div class="embed-content-title"><%= note.title %></div><% } %>
+        <div class="embed-content-preview"><%= note.rendered || note.content %></div>
+        <div class="embed-meta">
+          <span><img src="/public/images/icons/icon-calendar.png"><%= note.createdAt.toLocaleDateString('zh-CN') %></span>
+          <span><img src="/public/images/icons/icon-send.png"><%= note.replies ? note.replies.length : 0 %> 回应</span>
+          <% if (note.status === 'thrown') { %><span><img src="/public/images/icons/icon-bell.png"> 已抛出</span><% } else { %><span><img src="/public/images/icons/icon-bell.png"> 仅自己</span><% } %>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+<% } else { %>
+  <div class="embed-empty">这一天还没有纸条，去写一张吧～</div>
+<% } %>
+
+</body>
+</html>
+
+<% } else { %>
+<%- include("partials/header") %>
+<style>
+  .note-list-page {
+    min-height: 100vh;
+    padding: 24px 16px;
+    background-color: #F5F0E8;
+  }
+  .list-card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 24px;
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .page-title {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    color: #4A3728;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .note-item {
+    background: rgba(255,253,247,0.9);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    border-left: 5px solid transparent;
+  }
+  .note-item.type-mood { border-left-color: #4FC3F7; }
+  .note-item.type-worry { border-left-color: #9575CD; }
+  .note-item.type-todo { border-left-color: #FFB74D; }
+  .note-item.type-dream { border-left-color: #FFD54F; }
+  .note-item.type-secret { border-left-color: #E57373; }
+  .note-type-icon { width: 40px; height: 40px; flex-shrink: 0; }
+  .note-type-icon img { width: 100%; height: 100%; object-fit: contain; }
+  .note-content { flex: 1; }
+  .note-title { font-weight: 700; color: #4A3728; font-size: 16px; margin-bottom: 4px; }
+  .note-preview { color: #8B7E6A; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .note-meta { font-size: 11px; color: #B5A99A; margin-top: 6px; display: flex; gap: 12px; }
+</style>
+<div class="note-list-page">
+  <div class="list-card">
+    <h1 class="page-title">🌳 我的树洞</h1>
+    <% if (typeof notes !== "undefined" && notes && notes.length > 0) { %>
+      <% notes.forEach(function(note) { %>
+        <a href="/notes/<%= note.id %>" class="note-item type-<%= note.category || 'mood' %>">
+          <div class="note-type-icon"><img src="/public/images/icons/type-<%= note.category || 'mood' %>.png"></div>
+          <div class="note-content">
+            <% if (note.title) { %><div class="note-title"><%= note.title %></div><% } %>
+            <div class="note-preview"><%= note.rendered || note.content %></div>
+            <div class="note-meta">
+              <span><%= note.createdAt.toLocaleDateString('zh-CN') %></span>
+              <span><%= note.replies ? note.replies.length : 0 %> 回应</span>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+    <% } else { %>
+      <p style="text-align:center; color:#8B6F47;">树洞还是空的，去写一张纸条吧～</p>
+    <% } %>
+  </div>
+</div>
+<%- include("partials/footer") %>
+<% } %>
