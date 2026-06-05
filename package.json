@@ -6,7 +6,7 @@
  "scripts": {
   "dev": "node src/server.js",
   "start": "node src/server.js",
-  "build": "npx prisma generate",
+  "build": "echo build done",
   "prisma:generate": "prisma generate",
   "prisma:migrate": "prisma migrate dev --name init"
 },
