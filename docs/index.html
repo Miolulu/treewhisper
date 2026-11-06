@@ -224,23 +224,23 @@
     </div>
     <div class="shots">
       <div class="shot">
-        <img src="https://github.com/user-attachments/assets/ae1eac95-313b-4ad9-96d4-c8f724df5bd4" alt="树洞首页" loading="lazy">
+        <img data-src="b64/01-tree-home.txt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="树洞首页" loading="lazy">
         <span><b>树洞</b>首页</span>
       </div>
       <div class="shot">
-        <img src="https://github.com/user-attachments/assets/e394c55e-c54c-440d-916f-9ad7992c555b" alt="写纸条" loading="lazy">
+        <img data-src="b64/02-note-new.txt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="写纸条" loading="lazy">
         <span><b>写纸条</b>五种情绪分类</span>
       </div>
       <div class="shot">
-        <img src="https://github.com/user-attachments/assets/f590b8a1-59e2-4845-a02e-7b85b748d5be" alt="纸条列表" loading="lazy">
+        <img data-src="b64/03-notes.txt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="纸条列表" loading="lazy">
         <span><b>我的树洞</b>纸条陈列</span>
       </div>
       <div class="shot">
-        <img src="https://github.com/user-attachments/assets/1358a36c-bd2f-498f-b85d-bda3598992a2" alt="漂流瓶" loading="lazy">
+        <img data-src="b64/04-bottles.txt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="漂流瓶" loading="lazy">
         <span><b>捡纸团</b>随机漂流</span>
       </div>
       <div class="shot">
-        <img src="https://github.com/user-attachments/assets/e79a40d9-0a8f-4279-a010-c8359d8c3689" alt="情绪精灵" loading="lazy">
+        <img data-src="b64/05-spirit.txt" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="情绪精灵" loading="lazy">
         <span><b>小蜗</b>情绪精灵养成</span>
       </div>
     </div>
@@ -364,6 +364,12 @@
         lbimg.alt = img.alt;
         lb.classList.add('on');
       });
+    });
+    document.querySelectorAll('img[data-src]').forEach(function (img) {
+      fetch(img.getAttribute('data-src'))
+        .then(function (r) { return r.text(); })
+        .then(function (t) { img.src = 'data:image/webp;base64,' + t.replace(/\s/g, ''); })
+        .catch(function () {});
     });
     lb.addEventListener('click', close);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
