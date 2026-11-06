@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>树语 TreeWhisper · 情绪树洞社区</title>
+<meta name="description" content="树语 TreeWhisper —— 一个把情绪轻轻放进树洞的社区。纸条、纸团漂流、情绪精灵养成与树影集，从产品设计到上线由我独立完成。">
+<style>
+  :root{
+    --cream:#FBF8F1;
+    --paper:#FFFFFF;
+    --ink:#3E3226;
+    --ink-2:#6F6355;
+    --ink-3:#9A8D7C;
+    --green:#5E8C3F;
+    --green-2:#7CAA55;
+    --green-soft:#EDF3E4;
+    --line:#E8E1D3;
+    --shadow:0 10px 30px rgba(88,72,48,.08);
+    --shadow-lg:0 24px 60px rgba(88,72,48,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- Hero ---------- */
+  header{
+    position:relative;
+    padding:72px 0 56px;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      radial-gradient(680px 380px at 18% -10%, #E4EFD6 0%, rgba(228,239,214,0) 70%),
+      radial-gradient(520px 320px at 92% 4%, #F6EBD8 0%, rgba(246,235,216,0) 68%);
+    z-index:0;
+  }
+  header .wrap{position:relative;z-index:1;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--green);font-weight:600;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1.5px;background:var(--green-2);display:block;}
+  h1{
+    font-family:Georgia,"Songti SC","SimSun",serif;
+    font-size:clamp(34px,5.4vw,56px);
+    line-height:1.2;font-weight:700;letter-spacing:-.01em;
+  }
+  h1 small{
+    display:block;font-size:clamp(14px,2vw,17px);
+    font-family:-apple-system,"PingFang SC",sans-serif;
+    font-weight:400;color:var(--ink-3);letter-spacing:.22em;
+    margin-top:10px;
+  }
+  .lede{
+    font-size:clamp(16px,2.1vw,19px);
+    color:var(--ink-2);max-width:640px;margin-top:26px;
+  }
+  .lede b{color:var(--ink);font-weight:600;}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+  .tag{
+    font-size:13px;padding:5px 13px;border-radius:999px;
+    background:var(--paper);border:1px solid var(--line);color:var(--ink-2);
+  }
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:13px 26px;border-radius:999px;font-size:15px;font-weight:600;
+    text-decoration:none;transition:.22s ease;border:1px solid transparent;
+  }
+  .btn-primary{background:var(--green);color:#fff;box-shadow:0 8px 22px rgba(94,140,63,.26);}
+  .btn-primary:hover{background:#4F7A34;transform:translateY(-2px);box-shadow:0 12px 28px rgba(94,140,63,.32);}
+  .btn-ghost{background:var(--paper);color:var(--ink);border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--green-2);color:var(--green);transform:translateY(-2px);}
+  .hint{font-size:12.5px;color:var(--ink-3);margin-top:14px;}
+
+  /* ---------- 截图 ---------- */
+  section{padding:56px 0;}
+  .sec-head{margin-bottom:34px;}
+  .sec-head h2{
+    font-family:Georgia,"Songti SC",serif;
+    font-size:clamp(24px,3.2vw,32px);font-weight:700;line-height:1.3;
+  }
+  .sec-head p{color:var(--ink-2);margin-top:10px;max-width:680px;font-size:15.5px;}
+
+  .shots{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+  }
+  @media(max-width:900px){
+    .shots{
+      display:flex;overflow-x:auto;gap:14px;
+      scroll-snap-type:x mandatory;
+      padding:4px 24px 18px;margin:0 -24px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .shots::-webkit-scrollbar{height:6px;}
+    .shots::-webkit-scrollbar-thumb{background:#DED5C4;border-radius:99px;}
+    .shot{flex:0 0 62%;scroll-snap-align:center;}
+  }
+  .shot{
+    background:var(--paper);border-radius:20px;overflow:hidden;
+    border:1px solid var(--line);box-shadow:var(--shadow);
+    transition:.28s ease;
+  }
+  .shot:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+  .shot img{display:block;width:100%;aspect-ratio:9/19;object-fit:cover;object-position:top;cursor:zoom-in;}
+  .shot span{
+    display:block;padding:11px 14px 13px;font-size:13px;color:var(--ink-2);
+    border-top:1px solid var(--line);
+  }
+  .shot span b{color:var(--ink);font-weight:600;margin-right:4px;}
+
+  /* ---------- 灯箱 ---------- */
+  .lb{
+    position:fixed;inset:0;z-index:99;display:none;
+    background:rgba(38,32,24,.88);
+    backdrop-filter:blur(6px);
+    align-items:center;justify-content:center;padding:32px 18px;
+    cursor:zoom-out;
+  }
+  .lb.on{display:flex;}
+  .lb img{
+    max-width:100%;max-height:100%;border-radius:16px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+    object-fit:contain;
+  }
+  .lb-close{
+    position:absolute;top:20px;right:26px;color:#fff;font-size:30px;
+    line-height:1;opacity:.75;font-weight:300;
+  }
+  .lb-close:hover{opacity:1;}
+
+  /* ---------- 功能 ---------- */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:760px){.grid-2{grid-template-columns:1fr;}}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:20px;
+    padding:26px 26px 24px;box-shadow:var(--shadow);
+  }
+  .card h3{font-size:17px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:9px;}
+  .card h3 em{
+    font-style:normal;font-size:12px;font-weight:600;color:var(--green);
+    background:var(--green-soft);padding:2px 9px;border-radius:99px;letter-spacing:.02em;
+  }
+  .card p{font-size:14.5px;color:var(--ink-2);}
+  .card p + p{margin-top:9px;}
+
+  /* ---------- 思考 ---------- */
+  .think{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:8px 0;box-shadow:var(--shadow);}
+  .row{display:grid;grid-template-columns:200px 1fr;gap:0;padding:24px 30px;border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:none;}
+  @media(max-width:700px){.row{grid-template-columns:1fr;gap:8px;padding:20px 22px;}}
+  .row dt{font-weight:700;font-size:15px;color:var(--ink);}
+  .row dt span{display:block;font-weight:400;font-size:12.5px;color:var(--ink-3);margin-top:4px;letter-spacing:.05em;}
+  .row dd{font-size:14.8px;color:var(--ink-2);}
+  .row dd b{color:var(--ink);font-weight:600;}
+
+  /* ---------- 技术 ---------- */
+  .stack{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px;}
+  .stack i{
+    font-style:normal;font-size:13px;padding:6px 14px;border-radius:9px;
+    background:var(--green-soft);color:#456B2F;font-weight:500;
+    border:1px solid #DCE8CC;
+  }
+
+  /* ---------- 底部 ---------- */
+  .end{
+    margin-top:20px;background:linear-gradient(160deg,#F3F7EC,#FBF8F1 62%);
+    border-top:1px solid var(--line);
+  }
+  .end .wrap{padding:64px 24px 72px;text-align:center;}
+  .end h2{font-family:Georgia,"Songti SC",serif;font-size:clamp(22px,3vw,28px);font-weight:700;}
+  .end p{color:var(--ink-2);margin:12px auto 0;max-width:520px;font-size:15px;}
+  .end .cta{justify-content:center;}
+  footer{
+    padding:26px 0 40px;text-align:center;font-size:12.5px;color:var(--ink-3);
+    border-top:1px solid var(--line);
+  }
+  footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line);}
+  footer a:hover{color:var(--green);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Personal Product · 2026</div>
+    <h1>树语 TreeWhisper<small>情绪树洞社区</small></h1>
+    <p class="lede">
+      一个把情绪轻轻放进树洞的社区。写一张纸条存进树洞，或揉成纸团扔进风里，等一个陌生人捡到；
+      每天写字会喂饱树下的<b>小蜗</b>，回看时还有<b>树影集</b>和<b>树历</b>替你记着。
+    </p>
+    <div class="tags">
+      <span class="tag">C 端社区产品</span>
+      <span class="tag">情绪价值 · 轻社交</span>
+      <span class="tag">产品设计 + 全栈实现</span>
+      <span class="tag">AI 协作开发</span>
+    </div>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://treewhisper-demo.app.workbuddy.host/?sharecode=D5ALB7TBDL" target="_blank" rel="noopener">🌳 在线体验</a>
+      <a class="btn btn-ghost" href="#shots">先看界面</a>
+    </div>
+    <p class="hint">在线 Demo 为公开演示环境，数据可能定期重置；可直接注册新账号体验。</p>
+  </div>
+</header>
+
+<section id="shots">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>界面实拍</h2>
+      <p>以下均为线上 Demo 的真实运行界面（手机端），非设计稿。</p>
+    </div>
+    <div class="shots">
+      <div class="shot">
+        <img src="https://github.com/user-attachments/assets/ae1eac95-313b-4ad9-96d4-c8f724df5bd4" alt="树洞首页" loading="lazy">
+        <span><b>树洞</b>首页</span>
+      </div>
+      <div class="shot">
+        <img src="https://github.com/user-attachments/assets/e394c55e-c54c-440d-916f-9ad7992c555b" alt="写纸条" loading="lazy">
+        <span><b>写纸条</b>五种情绪分类</span>
+      </div>
+      <div class="shot">
+        <img src="https://github.com/user-attachments/assets/f590b8a1-59e2-4845-a02e-7b85b748d5be" alt="纸条列表" loading="lazy">
+        <span><b>我的树洞</b>纸条陈列</span>
+      </div>
+      <div class="shot">
+        <img src="https://github.com/user-attachments/assets/1358a36c-bd2f-498f-b85d-bda3598992a2" alt="漂流瓶" loading="lazy">
+        <span><b>捡纸团</b>随机漂流</span>
+      </div>
+      <div class="shot">
+        <img src="https://github.com/user-attachments/assets/e79a40d9-0a8f-4279-a010-c8359d8c3689" alt="情绪精灵" loading="lazy">
+        <span><b>小蜗</b>情绪精灵养成</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>做了什么</h2>
+      <p>围绕「表达 → 被接住 → 留下来」这条主链路，设计了四个互相咬合的功能模块。</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>纸条 <em>表达</em></h3>
+        <p>用「写一张纸条」替代「发一条动态」，把公开发言的社交压力降到最低。心情、烦恼、待办、梦想、秘密五种分类，用不同的色彩标签区分情绪浓度。</p>
+        <p>纸条默认私有，可以只存给自己，也可以选择让它离开树洞。</p>
+      </div>
+      <div class="card">
+        <h3>纸团漂流 <em>被接住</em></h3>
+        <p>把纸条揉成纸团抛出去，由系统随机分配给另一个人；捡到的人可以回应。</p>
+        <p>这是给冷启动设计的机制——新用户不需要有粉丝、不需要被算法推荐，也能收到真实的回响。每人每日限抛一次，保证稀缺感与内容质量。</p>
+      </div>
+      <div class="card">
+        <h3>小蜗养成 <em>留下来</em></h3>
+        <p>把「写纸条」这个动作和精灵成长绑定：写字、喂养、抚摸都能获得经验，小蜗会随等级变化状态和台词。</p>
+        <p>情绪产品最怕用完即走，用一个需要被照顾的小生命制造回来的理由。</p>
+      </div>
+      <div class="card">
+        <h3>树影集 · 树历 <em>可回看</em></h3>
+        <p>树影集按天收集「叶子」，树历把写过纸条的日子标出来，形成一条可视化的情绪时间线。</p>
+        <p>让用户在三个月后回头看时，看到的是自己走过的痕迹，而不只是一堆消失的帖子。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>几个产品判断</h2>
+      <p>这个项目里真正花了时间的地方，不是页面，是下面这四个取舍。</p>
+    </div>
+    <div class="think">
+      <dl>
+        <div class="row">
+          <dt>匿名 vs 身份<span>IDENTITY</span></dt>
+          <dd>情绪内容一旦绑定身份就会失真。所以做了<b>内容与身份解耦</b>：纸条有自己的身份，用户有自己的树洞；漂流的纸团对接收者只呈现内容，不暴露来源。安全感是这类产品的第一性需求。</dd>
+        </div>
+        <div class="row">
+          <dt>公开 vs 私有<span>VISIBILITY</span></dt>
+          <dd>默认<b>私有</b>，想被看见才主动抛出去。多数情绪产品默认公开、再让用户关掉，结果是所有人都不敢写。默认值决定内容供给量。</dd>
+        </div>
+        <div class="row">
+          <dt>互动 vs 沉默<span>INTERACTION</span></dt>
+          <dd>不做好友关系链、不做评论区。只保留<b>一对一回应</b>，且回应需要先捡到。降低社交成本的同时，也避免了情绪社区最容易出现的公开审判。</dd>
+        </div>
+        <div class="row">
+          <dt>即时 vs 沉淀<span>RETENTION</span></dt>
+          <dd>用养成和日历把「一次性宣泄」转成<b>可积累的资产</b>。用户的每一次表达都在喂养同一只小蜗、点亮同一格日历，迁移成本因此上升。</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>怎么实现的</h2>
+      <p>从需求、交互到前后端与部署由我独立完成，全程用 AI 协作（方向探讨 → 需求拆分 → 编码 → 自测 → 上线）。</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>技术栈</h3>
+        <p>服务端渲染的全栈单体，没有引入前端框架，保证个人项目下的可维护性。</p>
+        <div class="stack">
+          <i>Node.js</i><i>Express 4</i><i>EJS</i><i>Prisma</i><i>SQLite</i>
+          <i>Socket.io</i><i>JWT</i><i>bcrypt</i><i>Multer</i>
+        </div>
+      </div>
+      <div class="card">
+        <h3>我的角色</h3>
+        <p>独立完成产品定义、信息架构、交互与视觉走查、数据模型设计、接口与页面实现、部署上线。</p>
+        <p>其中 AI 承担了代码实现与自测，我负责判断「做什么」和「什么算做对了」。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="end">
+  <div class="wrap">
+    <h2>想亲手试一下吗</h2>
+    <p>Demo 是公开可注册的演示环境，直接开一个新账号就能走完整流程。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://treewhisper-demo.app.workbuddy.host/?sharecode=D5ALB7TBDL" target="_blank" rel="noopener">🌳 打开树语</a>
+      <a class="btn btn-ghost" href="https://github.com/Miolulu/treewhisper" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    卢璐 · 产品经理 &nbsp;|&nbsp; <a href="https://github.com/Miolulu" target="_blank" rel="noopener">github.com/Miolulu</a>
+  </div>
+</footer>
+
+<div class="lb" id="lb">
+  <span class="lb-close">×</span>
+  <img id="lbimg" alt="">
+</div>
+
+<script>
+  (function () {
+    var lb = document.getElementById('lb');
+    var lbimg = document.getElementById('lbimg');
+    function close() { lb.classList.remove('on'); lbimg.removeAttribute('src'); }
+    document.querySelectorAll('.shot img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        lbimg.src = img.src;
+        lbimg.alt = img.alt;
+        lb.classList.add('on');
+      });
+    });
+    lb.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  })();
+</script>
+
+</body>
+</html>
